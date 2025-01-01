@@ -38,7 +38,7 @@ public class EmployeeController {
      * Endpoint to fetch employees.
      * @return ResponseEntity containing List of Employee objects and HTTP status
      */
-    @GetMapping(value="/fetchEmployees",produces = "application/xml")
+    @GetMapping(value="/fetchEmployees",produces = "*/*")
     public ResponseEntity<List<Employee>> fetchEmployees() {
         List<Employee> employees = employeeService.getEmployees();
 
