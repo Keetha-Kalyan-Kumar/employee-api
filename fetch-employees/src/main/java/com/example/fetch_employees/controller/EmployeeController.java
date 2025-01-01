@@ -10,11 +10,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fetch_employees.exception.EmployeeNotFoundException;
 import com.example.fetch_employees.model.Employee;
 import com.example.fetch_employees.service.EmployeeService;
 
@@ -53,5 +55,23 @@ public class EmployeeController {
 
         // Return the added employee wrapped in a ResponseEntity with HTTP 201 status (created)
         return new ResponseEntity<>(addedEmployee, HttpStatus.CREATED);
+    }
+    
+    
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> fetchEmployeeById(@PathVariable("id") int pk){
+    	if(pk==100) {
+    		throw new EmployeeNotFoundException("Employee with id : "+pk+" is not found");
+    	}
+    	
+    	else if (pk < 0) {
+            throw new IllegalArgumentException("ID cannot be negative");
+        }
+    	else if (pk > 100) {
+            throw new RuntimeException("ID exceeds the limit");
+        }
+    	else {
+    		return new ResponseEntity<>(new Employee(pk,"Employee Exception Testig","Department"),HttpStatus.OK);
+    	}
     }
 }
