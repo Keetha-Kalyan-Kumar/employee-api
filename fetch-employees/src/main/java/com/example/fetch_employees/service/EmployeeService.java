@@ -3,8 +3,10 @@ package com.example.fetch_employees.service;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.fetch_employees.config.ConfigProperties;
 import com.example.fetch_employees.model.Employee;
 
 import java.util.ArrayList;
@@ -16,6 +18,9 @@ import java.util.List;
 @Service
 public class EmployeeService {
 
+	@Autowired
+	private ConfigProperties configProperties;
+	
     // Sample employee list, you can replace it with a database later
     private List<Employee> employees = new ArrayList<>();
 
@@ -42,6 +47,21 @@ public class EmployeeService {
     public Employee addEmployee(Employee employee) {
         employees.add(employee);
         return employee;
+    }
+    
+    
+    public List<Employee> getEmployeesForProfiles() {
+        // Fetch the employee limit from the active profile's configuration.
+        int limit = configProperties.getEmployeeLimit();
+        List<Employee> employees = new ArrayList<>();
+
+        // Create mock employee data up to the configured limit.
+        for (int i = 1; i <= limit; i++) {
+            employees.add(new Employee(i, "Employee " + i, "Department " + i));
+        }
+
+        // Return the list of employees as the response.
+        return employees;
     }
 }
 
