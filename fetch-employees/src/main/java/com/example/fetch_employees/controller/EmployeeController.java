@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.fetch_employees.config.ConfigProperties;
 import com.example.fetch_employees.exception.EmployeeNotFoundException;
 import com.example.fetch_employees.model.Employee;
 import com.example.fetch_employees.service.EmployeeService;
@@ -35,6 +36,9 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+    
+    @Autowired
+    private ConfigProperties configProperties;
 
     /**
      * Endpoint to fetch employees.
@@ -73,5 +77,18 @@ public class EmployeeController {
     	else {
     		return new ResponseEntity<>(new Employee(pk,"Employee Exception Testig","Department"),HttpStatus.OK);
     	}
+    }
+    
+    
+    @GetMapping("/fetch")
+    public ResponseEntity<List<Employee>> getEmployeesForProfiles(){
+    	List<Employee> ans = employeeService.getEmployeesForProfiles();
+    	return new ResponseEntity<>(ans,HttpStatus.CREATED);
+    }
+    
+    @GetMapping("/environment") // Maps HTTP GET requests to "/employees/environment".
+    public ResponseEntity<String> getEnvironment() {
+        // Fetch the environment name from the active profile's configuration.
+        return new ResponseEntity<>("Running in: " + configProperties.getEnvironment(),HttpStatus.OK);
     }
 }
