@@ -21,8 +21,7 @@ import com.example.fetch_employees.exception.EmployeeNotFoundException;
 import com.example.fetch_employees.model.Employee;
 import com.example.fetch_employees.service.EmployeeService;
 
-
-
+import java.io.IOException;
 import java.util.List;
 
 
@@ -50,6 +49,26 @@ public class EmployeeController {
 
         // Return the list of employees wrapped in a ResponseEntity with HTTP 200 status
         return new ResponseEntity<>(employees, HttpStatus.CREATED);
+    }
+    
+    @GetMapping(value="/test",produces = "*/*")
+    public ResponseEntity<String> testingVelocity() throws IOException{
+    	employeeService.logboxTestSplit();
+    	return new ResponseEntity<>("S",HttpStatus.OK);
+    	
+    }
+
+    @GetMapping(value = "/string",produces = "*/*")
+    public ResponseEntity<String> testingString(){
+        String ans = employeeService.learningStringConcepts();
+        return new ResponseEntity<>(ans,HttpStatus.OK);
+    }
+    
+    
+    @GetMapping(value = "/thread",produces = "*/*")
+    public ResponseEntity<String> learningMultiThreading(){
+         employeeService.conceptOfMultithreading();
+        return new ResponseEntity<>("S",HttpStatus.OK);
     }
     
     @PostMapping(value ="/addEmployee",consumes = "application/json",produces = "application/xml")
